@@ -1,0 +1,6 @@
+<launch>
+
+  <!-- Launching Mapping-->
+  <include file="$(find turtlebot_navigation)/launch/includes/octomap/octomap_mapping.xml"/>
+
+</launch>

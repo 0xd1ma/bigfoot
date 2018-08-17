@@ -1,0 +1,14 @@
+<package>
+  <name>bf_localization</name>
+  <version>0.3.0</version>
+  <description>bf_localization</description>
+  <maintainer email="0xd1ma@gmail.com">0xd1ma</maintainer>
+  <license>BSD</license>
+  <author>0xd1ma</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <export>
+
+  </export>
+</package>

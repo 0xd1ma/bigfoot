@@ -1,0 +1,8 @@
+<launch>
+
+  <!-- Launch ROS Package Template Node -->
+  <node pkg="joy" type="joy_node" name="joy" output="screen">
+    <remap from="/joy" to="/robocardriver/joy"/>
+  </node>
+
+</launch>

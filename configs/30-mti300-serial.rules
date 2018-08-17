@@ -1,0 +1,1 @@
+SUBSYSTEM=="tty", ATTRS{idVendor}=="2639", ATTRS{idProduct}=="0003", ATTRS{serial}=="0368229C", SYMLINK+="mti30"

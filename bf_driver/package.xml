@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>bf_driver</name>
+  <version>0.1.0</version>
+  <description>The driver package for connect with robot Bigfoot</description>
+
+  <maintainer email="0xd1ma@gmail.com.ru">Dmitry Demidov</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://rednibble.ru/</url>
+  <author email="0xd1ma@gmail.com.ru">Dmitry Demidov</author>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>serial</depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+
+</package>

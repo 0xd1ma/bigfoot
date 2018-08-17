@@ -1,0 +1,23 @@
+<package>
+  <name>bigfoot</name>
+  <version>0.3.0</version>
+  <description>
+      bigfoot is a group of software to run on omni platform for monitoring store shelfs.
+  </description>
+
+  <maintainer email="0xd1ma@gmail.com">0xd1ma</maintainer>
+
+  <license>BSD</license>
+  <url type="repository">https://github.com/0xd1ma/bigfoot</url>
+  <url type="bugtracker">https://github.com/0xd1ma/bigfoot/issues</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>bf_driver</run_depend>
+  <run_depend>bf_navigation</run_depend>
+  <run_depend>bf_shelf_follower</run_depend>
+
+  <export>
+    <metapackage/> 
+  </export>
+</package>
