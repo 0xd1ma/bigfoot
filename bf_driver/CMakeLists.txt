@@ -11,7 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
         geometry_msgs
         nav_msgs
         sensor_msgs
-        nmea_msgs
         roslib
         serial
         )
