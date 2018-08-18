@@ -41,7 +41,7 @@ namespace bf_driver
         m_imuTelemetryPub = m_nodeHandle.
                 advertise< sensor_msgs::Imu >("telemetry/imu", 10);
 
-        m_odometryPub = m_nodeHandle.advertise< nav_msgs::Odometry >("odom", 10);
+        m_odometryPub = m_nodeHandle.advertise< nav_msgs::Odometry >("odom_raw", 10);
 
 //        ROS_INFO("ROS publisher init");
 
@@ -143,12 +143,12 @@ namespace bf_driver
         odom.pose.pose.position.z = 0.0;
         odom.pose.pose.orientation = odom_quat;
 
-        odom.pose.covariance = boost::assign::list_of(1e-3) (0) (0)  (0)  (0)  (0)
-                (0) (1e-3)  (0)  (0)  (0)  (0)
+        odom.pose.covariance = boost::assign::list_of(1e-1) (0) (0)  (0)  (0)  (0)
+                (0) (1e-1)  (0)  (0)  (0)  (0)
                 (0)   (0)  (1e6) (0)  (0)  (0)
                 (0)   (0)   (0) (1e6) (0)  (0)
                 (0)   (0)   (0)  (0) (1e6) (0)
-                (0)   (0)   (0)  (0)  (0)  (1e3) ;
+                (0)   (0)   (0)  (0)  (0)  (1e-1) ;
 
         odom.child_frame_id = "base_link";
         odom.twist.twist.linear.x = vx;
@@ -161,9 +161,7 @@ namespace bf_driver
                 (0)   (0)  (1e6) (0)  (0)  (0)
                 (0)   (0)   (0) (1e6) (0)  (0)
                 (0)   (0)   (0)  (0) (1e6) (0)
-                (0)   (0)   (0)  (0)  (0)  (1e3) ;
-
-
+                (0)   (0)   (0)  (0)  (0)  (1e-3) ;
 
         m_odometryPub.publish(odom);
     }
