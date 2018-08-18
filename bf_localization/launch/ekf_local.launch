@@ -1,11 +1,7 @@
 <launch>
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_local" clear_params="true">
-    <rosparam command="load" file="/home/note/git/bigfoot/localization/params/ekf_local.yaml" />
+    <rosparam command="load" file="$(find bf_localization)/params/ekf_local.yaml" />
 
-   <!--  Placeholder for output topic remapping
-    <remap from="odometry/filtered" to=""/>
-    <remap from="accel/filtered" to=""/>
-    -->
-    <remap from="odometry/filtered" to="odometry/filtered/local"/>
+    <remap from="odometry/filtered" to="odom"/>
   </node>
 </launch>

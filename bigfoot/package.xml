@@ -16,6 +16,7 @@
   <run_depend>bf_driver</run_depend>
   <run_depend>bf_navigation</run_depend>
   <run_depend>bf_shelf_follower</run_depend>
+  <run_depend>bf_localization</run_depend>
 
   <export>
     <metapackage/> 
