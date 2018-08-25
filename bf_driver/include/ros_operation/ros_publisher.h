@@ -7,12 +7,31 @@
 #include "vehicle/vehicle_common.h"
 #include <tf/transform_broadcaster.h>
 
+#include <math.h>
+
+
+const double wheelShiftAngle = M_PI / 4;
+
+// convert degree to radian
+inline double deg2rad(double deg)
+{
+    return deg * M_PI / 180.0;
+}
+
+// convert degree to radian
+inline double rad2deg(double rad)
+{
+    return rad * 180.0 / M_PI;
+}
+
 namespace bf_driver
 {
     using pubCallback = std::function< void(boost::any) >;
 
     using idPublisherMap = std::map< std::uint32_t, pubCallback >;
     using idPublisherPair = std::pair< std::uint32_t, pubCallback >;
+
+
 
     struct OdometryVelocity
     {
@@ -89,7 +108,18 @@ namespace bf_driver
         void publishTwistTelemetry(boost::any dt);
         void publishImuTelemetry(boost::any dt);
 
+        std::int32_t m_frontLeftEncoderPrevious;
+        std::int32_t m_frontRightEncoderPrevious;
+        std::int32_t m_backRightEncoderPrevious;
+        std::int32_t m_backLeftEncoderPrevious;
 
+        ros::Time m_stamp;
+
+        double m_theta;
+        double m_x_global;
+        double m_y_global;
+
+        bool m_firstGo;
     };
 
 }

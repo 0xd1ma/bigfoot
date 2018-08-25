@@ -18,12 +18,14 @@ namespace vehicle
      * ID сообщений CAN
      *
     ***************************************************************************/
-    // установка поворота колес
+    // установка
     const std::uint32_t twist_control_id{0x00};
-    // считывание текущего положения колес
+    // считывание скоростей
     const std::uint32_t twist_telemetry_id{0x00};
-    // датчики вращения колес
+    // считывание инерциальных данных
     const std::uint32_t imu_telemetry_id{0x01};
+    // считывание данных энкодеров
+    const std::uint32_t encoder_telemetry_id{0x02};
 
     /***************************************************************************
      *
@@ -34,13 +36,14 @@ namespace vehicle
             {
                 twist_control_id,
                 twist_telemetry_id,
-                imu_telemetry_id
+                imu_telemetry_id,
+                encoder_telemetry_id
             };
 
     const std::set< std::uint32_t > allowedToPublishId =
             {
-                twist_telemetry_id,
-                imu_telemetry_id
+                twist_telemetry_id
+//                imu_telemetry_id
             };
 
     inline bool isIdInAllowedSet(std::uint32_t id)
@@ -112,6 +115,14 @@ namespace vehicle
         std::float_t linear_acceleration_x;
         std::float_t linear_acceleration_y;
         std::float_t linear_acceleration_z;
+    };
+
+    struct encoder_telemetry
+    {
+        std::int32_t forward_left;
+        std::int32_t forward_right;
+        std::int32_t back_right;
+        std::int32_t back_left;
     };
 
     /***************************************************************************

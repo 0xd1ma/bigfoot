@@ -88,36 +88,23 @@ namespace protocol
     ***************************************************************************/
     boost::any MsgProcessor::twistTelemetryConverting(std::vector< std::uint8_t > msg)
     {
-        vehicle::twist_telemetry twist;
+        vehicle::encoder_telemetry encoder;
 
-//        std::vector< std::uint8_t > msgt(4, 0);
-//
-//        float a = 3.14;
-//
-//        std::uint8_t const * x = reinterpret_cast<std::uint8_t const *>(&a);
-//
-//        msgt.at(0) = x[0];
-//        msgt.at(1) = x[1];
-//        msgt.at(2) = x[2];
-//        msgt.at(3) = x[3];
+        encoder.forward_left = static_cast<std::int32_t>(charArrToInt32(msg.begin()));
+//        std::cout << encoder.forward_left << std::endl;
 
-        twist.vx = convertVectorBytesToFloat(msg.begin());
-//        std::cout << twist.vx << std::endl;
+        encoder.forward_right = static_cast<std::int32_t>(charArrToInt32(msg.begin() + 4));
+//        std::cout << encoder.forward_right << std::endl;
 
-        twist.vy = convertVectorBytesToFloat(msg.begin() + 4);
-//        std::cout << twist.vy << std::endl;
+        encoder.back_right = static_cast<std::int32_t>(charArrToInt32(msg.begin() + 8));
+//        std::cout << encoder.back_right << std::endl;
 
-        twist.w = convertVectorBytesToFloat(msg.begin() + 8);
-//        std::cout << twist.w << std::endl;
+        encoder.back_left = static_cast<std::int32_t>(charArrToInt32(msg.begin() + 12));
+//        std::cout << encoder.back_left << std::endl;
 
-        //std::cout << static_cast<int>(msg.at(PROTOCOL_MSG_CRC_OFFSET)) << std::endl;
+//        std::cout << "telemetry is received" << std::endl;
 
-        twist.cntrl = charArrToInt32(msg.begin() + 12);
-//        std::cout << std::hex << twist.cntrl << std::endl;
-
-//        std::cout << "Twist telemetry is received" << std::endl;
-
-        return twist;
+        return encoder;
     }
 
     boost::any MsgProcessor::imuTelemetryConverting(std::vector< std::uint8_t > msg)

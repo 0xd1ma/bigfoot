@@ -8,13 +8,19 @@
 
 #include <boost/assign.hpp>
 
+
+
 namespace bf_driver
 {
     RosPublisher::RosPublisher(ros::NodeHandle &nodeHandle,
                                vehicle::idDataMap &rxMap) :
                                m_nodeHandle{nodeHandle},
                                m_rosCalls{},
-                               m_rxDataMap{rxMap}
+                               m_rxDataMap{rxMap},
+                               m_firstGo{true},
+                               m_theta{0.0},
+                               m_x_global{0.0},
+                               m_y_global{0.0}
     {
         /***********************************************************************
          *
@@ -42,8 +48,6 @@ namespace bf_driver
                 advertise< sensor_msgs::Imu >("telemetry/imu", 10);
 
         m_odometryPub = m_nodeHandle.advertise< nav_msgs::Odometry >("odom", 10);
-
-//        ROS_INFO("ROS publisher init");
 
     }
 
@@ -81,15 +85,11 @@ namespace bf_driver
     ***************************************************************************/
     void RosPublisher::publishTwistTelemetry(boost::any dt)
     {
-        geometry_msgs::TwistStamped msg;
-        vehicle::twist_telemetry tmp;
-
-        msg.header.stamp = ros::Time::now();
-        msg.header.frame_id = "base_footprint";
+        vehicle::encoder_telemetry tmp;
 
         try
         {
-            tmp = boost::any_cast< vehicle::twist_telemetry >(dt);
+            tmp = boost::any_cast< vehicle::encoder_telemetry >(dt);
         }
         catch (boost::bad_any_cast &e)
         {
@@ -97,15 +97,125 @@ namespace bf_driver
             assert(0);
         }
 
-        msg.twist.linear.x = tmp.vx;
-        msg.twist.linear.y = tmp.vy;
+        if (m_firstGo)
+        {
+            m_firstGo = false;
+
+            m_stamp = ros::Time::now();
+
+            m_frontLeftEncoderPrevious = tmp.forward_left;
+            m_frontRightEncoderPrevious = tmp.forward_right;
+            m_backRightEncoderPrevious = tmp.back_right;
+            m_backLeftEncoderPrevious = tmp.back_left;
+
+            return;
+        }
+
+        std::int32_t deltaForwardLeft = tmp.forward_left - m_frontLeftEncoderPrevious;
+        std::int32_t deltaForwardRight = tmp.forward_right - m_frontRightEncoderPrevious;
+        std::int32_t deltaBackRight = tmp.back_right - m_backRightEncoderPrevious;
+        std::int32_t deltaBackLeft = tmp.back_left - m_backLeftEncoderPrevious;
+
+        m_frontLeftEncoderPrevious = tmp.forward_left;
+        m_frontRightEncoderPrevious = tmp.forward_right;
+        m_backRightEncoderPrevious = tmp.back_right;
+        m_backLeftEncoderPrevious = tmp.back_left;
+
+        std::cout << "delta forward left: " << deltaForwardLeft << std::endl;
+        std::cout << "delta forward right: " << deltaForwardRight << std::endl;
+        std::cout << "delta back right: " << deltaBackRight << std::endl;
+        std::cout << "delta back left: " << deltaBackLeft << std::endl;
+
+        double deltaT = ros::Time::now().toSec() - m_stamp.toSec();
+        m_stamp = ros::Time::now();
+
+//        std::cout << "delta T:" << deltaT << std::endl;
+
+        double multi = M_PI * 0.098 / 36 / 2096 / 2 / 2; // от куда /4 энкодеры ?
+
+        double s_fl = deltaForwardLeft * multi;
+        double s_fr = deltaForwardRight * multi;
+        double s_br = deltaBackRight * multi;
+        double s_bl = deltaBackLeft * multi;
+
+//        double omega = M_PI * 0.098 * (deltaForwardLeft + deltaForwardRight + deltaBackRight + deltaBackLeft) / 36 / 4096 / 2;
+        double sum = s_fl + s_fr + s_br + s_bl;
+
+        m_theta += sum / 4 / 0.18;
+
+        //double deltaX = s_fl * cos(M_PI / 2 + wheelShiftAngle) + s_bl * cos(M_PI / 2 + M_PI / 2 + wheelShiftAngle) + s_br * cos(M_PI / 2 + M_PI + wheelShiftAngle) + s_fr * cos(M_PI / 2 + 3 * M_PI * wheelShiftAngle / 2);
+        double deltaX = - s_fl * sin(wheelShiftAngle) + s_bl * sin(wheelShiftAngle) + s_br * sin(wheelShiftAngle) - s_fr * sin(wheelShiftAngle);
+        double deltaY = - s_fl * cos(wheelShiftAngle) - s_bl * cos(wheelShiftAngle) + s_br * cos(wheelShiftAngle) + s_fr * cos(wheelShiftAngle);
+
+        m_x_global += deltaX / 2; /// 4 / 0.18;
+        m_y_global += deltaY / 2; /// 4 / 0.18;
+
+        std::cout << "m_theta: " << rad2deg(m_theta) << std::endl;
+        std::cout << "X: " << m_x_global << std::endl;
+        std::cout << "Y: " << m_y_global << std::endl;
+
+        geometry_msgs::TwistStamped msg;
+
+        double vx = deltaX / 2 / deltaT;
+        double vy = deltaY / 2 / deltaT;
+
+        double omega = sum / 4 / 0.18 / deltaT;
+
+        msg.header.stamp = ros::Time::now();
+        msg.header.frame_id = "base_footprint";
+        msg.twist.linear.x = vx;
+        msg.twist.linear.y = vy;
         msg.twist.linear.z = 0.0;
 
-        msg.twist.angular.z = tmp.w;
+        msg.twist.angular.z = omega;
 
         m_twistTelemetryPub.publish(msg);
 
-        publishOdometry(tmp.vx, tmp.vy, tmp.w);
+        geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(m_theta);
+
+        geometry_msgs::TransformStamped odom_trans;
+
+        odom_trans.header.stamp = ros::Time::now();
+        odom_trans.header.frame_id = "odom";
+        odom_trans.child_frame_id = "base_footprint";
+        odom_trans.transform.translation.x = m_x_global;
+        odom_trans.transform.translation.y = m_y_global;
+        odom_trans.transform.translation.z = 0.0;
+        odom_trans.transform.rotation = odom_quat;
+
+        m_odomTfBroadcaster.sendTransform(odom_trans);
+
+        nav_msgs::Odometry odom;
+
+        odom.header.frame_id = "odom";
+        odom.header.stamp = ros::Time::now();
+
+        odom.pose.pose.position.x = m_x_global;
+        odom.pose.pose.position.y = m_y_global;
+        odom.pose.pose.position.z = 0.0;
+        odom.pose.pose.orientation = odom_quat;
+
+        odom.pose.covariance = boost::assign::list_of(1e-1) (0) (0)  (0)  (0)  (0)
+                (0) (1e-1)  (0)  (0)  (0)  (0)
+                (0)   (0)  (1e6) (0)  (0)  (0)
+                (0)   (0)   (0) (1e6) (0)  (0)
+                (0)   (0)   (0)  (0) (1e6) (0)
+                (0)   (0)   (0)  (0)  (0)  (1e-1) ;
+
+        odom.child_frame_id = "base_footprint";
+        odom.twist.twist.linear.x = vx;
+        odom.twist.twist.linear.y = vy;
+
+        odom.twist.twist.angular.z = omega;
+
+        odom.twist.covariance =  boost::assign::list_of(1e-1) (0)   (0)  (0)  (0)  (0)
+                (0) (1e-1)  (0)  (0)  (0)  (0)
+                (0)   (0)  (1e6) (0)  (0)  (0)
+                (0)   (0)   (0) (1e6) (0)  (0)
+                (0)   (0)   (0)  (0) (1e6) (0)
+                (0)   (0)   (0)  (0)  (0)  (1e-1) ;
+
+        m_odometryPub.publish(odom);
     }
 
     void RosPublisher::publishImuTelemetry(boost::any dt)

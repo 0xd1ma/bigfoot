@@ -82,6 +82,14 @@ namespace bf_driver
 
                 m_port->read(bytesStream, inSize);
 
+//                for (auto x : bytesStream)
+//                {
+//                    std::cout << std::hex << static_cast<int>(x) << " ";
+//                }
+//                std::cout << std::endl;
+
+//                m_curState = State::DONE;
+
                 for (auto x : bytesStream)
                 {
                     m_composer.compose(x, m_slpMsg);

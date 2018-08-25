@@ -41,7 +41,6 @@ namespace bf_driver
     ***************************************************************************/
     std::vector< std::uint8_t > MsgDataPacker::twistControlPack(void)
     {
-
         vehicle::storage store;
         store = m_txDataMap[vehicle::twist_control_id];
 
