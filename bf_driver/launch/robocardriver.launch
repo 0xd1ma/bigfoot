@@ -1,9 +1,0 @@
-<launch>
-
-  <!-- Launch ROS Package Robocardriver Node -->
-  <node pkg="robocardriver" type="robocardriver" name="robocardriver" output="screen">
-    <rosparam command="load" file="$(find robocardriver)/config/default.yaml" />
-  </node>
-
-</launch>
-

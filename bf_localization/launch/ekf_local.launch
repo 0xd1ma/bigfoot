@@ -1,7 +1,9 @@
 <launch>
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_local" clear_params="true">
+
     <rosparam command="load" file="$(find bf_localization)/params/ekf_local.yaml" />
 
     <remap from="odometry/filtered" to="odom"/>
+
   </node>
 </launch>

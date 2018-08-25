@@ -61,14 +61,27 @@ namespace bf_driver
             std::double_t delta_y = vy * dt;
             std::double_t delta_th = vth * dt;
 
-//            std::cout << "dt : " << dt << "delta (x y th) : (" << delta_x << " " << delta_y << " " << delta_th << ")" << std::endl;
+            //std::cout << "dt : " << dt << "delta (x y th) : (" << delta_x << " " << delta_y << " " << delta_th << ")" << std::endl;
 
             x += delta_x;
             y += delta_y;
             th += delta_th;
+            
             stamp = ros::Time::now();
         }
     };
+    
+    // convert degree to radian
+    inline double deg2rad(double deg)
+    {
+        return deg * M_PI / 180.0;
+    }
+
+    // convert degree to radian
+    inline double rad2deg(double rad)
+    {
+        return rad * 180.0 / M_PI;
+    }    
 
 
     class RosPublisher

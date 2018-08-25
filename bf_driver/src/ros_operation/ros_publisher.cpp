@@ -229,19 +229,19 @@ namespace bf_driver
 
         geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(m_odom.th);
 
-//        std::cout << std::dec << "Theta: " << rad2deg(m_autowareOdom.th) << std::endl;
+        //std::cout << std::dec << "Theta: " << rad2deg(m_odom.th) << std::endl;
 
-//        geometry_msgs::TransformStamped odom_trans;
-//
-//        odom_trans.header.stamp = ros::Time::now();
-//        odom_trans.header.frame_id = "odom";
-//        odom_trans.child_frame_id = "base_link";
-//        odom_trans.transform.translation.x = m_odom.x;
-//        odom_trans.transform.translation.y = m_odom.y;
-//        odom_trans.transform.translation.z = 0.0;
-//        odom_trans.transform.rotation = odom_quat;
-//
-//        m_odomTfBroadcaster.sendTransform(odom_trans);
+        //geometry_msgs::TransformStamped odom_trans;
+
+        //odom_trans.header.stamp = ros::Time::now();
+        //odom_trans.header.frame_id = "odom";
+        //odom_trans.child_frame_id = "base_footprint";
+        //odom_trans.transform.translation.x = m_odom.x;
+        //odom_trans.transform.translation.y = m_odom.y;
+        //odom_trans.transform.translation.z = 0.0;
+        //odom_trans.transform.rotation = odom_quat;
+
+        //m_odomTfBroadcaster.sendTransform(odom_trans);
 
         nav_msgs::Odometry odom;
 
@@ -253,14 +253,14 @@ namespace bf_driver
         odom.pose.pose.position.z = 0.0;
         odom.pose.pose.orientation = odom_quat;
 
-        odom.pose.covariance = boost::assign::list_of(1e-3) (0) (0)  (0)  (0)  (0)
-                (0) (1e-3)  (0)  (0)  (0)  (0)
+        odom.pose.covariance = boost::assign::list_of(1e-1) (0) (0)  (0)  (0)  (0)
+                (0) (1e-1)  (0)  (0)  (0)  (0)
                 (0)   (0)  (1e6) (0)  (0)  (0)
                 (0)   (0)   (0) (1e6) (0)  (0)
                 (0)   (0)   (0)  (0) (1e6) (0)
-                (0)   (0)   (0)  (0)  (0)  (1e3) ;
+                (0)   (0)   (0)  (0)  (0)  (1e-1) ;
 
-        odom.child_frame_id = "base_link";
+        odom.child_frame_id = "base_footprint";
         odom.twist.twist.linear.x = vx;
         odom.twist.twist.linear.y = vy;
 
@@ -268,12 +268,10 @@ namespace bf_driver
 
         odom.twist.covariance =  boost::assign::list_of(1e-3) (0)   (0)  (0)  (0)  (0)
                 (0) (1e-3)  (0)  (0)  (0)  (0)
-                (0)   (0)  (1e6) (0)  (0)  (0)
-                (0)   (0)   (0) (1e6) (0)  (0)
-                (0)   (0)   (0)  (0) (1e6) (0)
-                (0)   (0)   (0)  (0)  (0)  (1e3) ;
-
-
+                (0)   (0)  (1e-3) (0)  (0)  (0)
+                (0)   (0)   (0) (1e-3) (0)  (0)
+                (0)   (0)   (0)  (0) (1e-3) (0)
+                (0)   (0)   (0)  (0)  (0)  (1e-3) ;
 
         m_odometryPub.publish(odom);
     }

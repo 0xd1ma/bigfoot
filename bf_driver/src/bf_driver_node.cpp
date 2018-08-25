@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 
 //    if (!nodeHandle.getParam("serial_port_name", portName))
 //    {
-        portName = "/dev/ttyUSB0";
+        portName = "/dev/bigfoot";
 //        ROS_WARN("Default serial port name");
 //    }
 
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 
 //    if (!nodeHandle.getParam("loop_rate", loopRate))
 //    {
-        loopRate = 100.0;
+        loopRate = 1000.0;
 //        ROS_WARN("Default loop rate");
 //    }
 
