@@ -25,7 +25,7 @@ old_y = 0.0
 #start session
 #http://ip:port/startSession?planogramId=1&offset=0
 def start_session():
-    url = 'http://192.168.0.30:80/startSession'
+    url = 'http://192.168.0.212:80/startSession'
     params = {'planogramId': 1, 'offset': 0}
     
     data = BytesIO()
@@ -47,7 +47,7 @@ def start_session():
 #take the photo
 #http://ip:port/photo?offset=1
 def take_the_photo(num):
-    url = 'http://192.168.0.30:80/photo'
+    url = 'http://192.168.0.212:80/photo'
     params = {'offset': num}
     
     data = BytesIO()
@@ -69,7 +69,7 @@ def take_the_photo(num):
 #end of session
 #http://ip:port/endSession?offset=0 
 def end_session():
-    url = 'http://192.168.0.30:80/endSession'
+    url = 'http://192.168.0.212:80/endSession'
     params = {'offset': 0}
     
     data = BytesIO()
