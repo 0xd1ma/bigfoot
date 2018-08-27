@@ -123,6 +123,8 @@ namespace vehicle
         std::int32_t forward_right;
         std::int32_t back_right;
         std::int32_t back_left;
+
+        std::uint32_t voltage_mv;
     };
 
     /***************************************************************************

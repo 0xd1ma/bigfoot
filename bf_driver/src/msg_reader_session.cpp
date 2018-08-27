@@ -87,7 +87,7 @@ namespace bf_driver
 //                    std::cout << std::hex << static_cast<int>(x) << " ";
 //                }
 //                std::cout << std::endl;
-
+//
 //                m_curState = State::DONE;
 
                 for (auto x : bytesStream)

@@ -111,6 +111,10 @@ namespace bf_driver
             return;
         }
 
+        double voltage = tmp.voltage_mv / 1000.0;
+
+        std::cout << "robot voltage: " << voltage << std::endl;
+
         std::int32_t deltaForwardLeft = tmp.forward_left - m_frontLeftEncoderPrevious;
         std::int32_t deltaForwardRight = tmp.forward_right - m_frontRightEncoderPrevious;
         std::int32_t deltaBackRight = tmp.back_right - m_backRightEncoderPrevious;

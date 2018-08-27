@@ -103,6 +103,7 @@ namespace protocol
 //        std::cout << encoder.back_left << std::endl;
 
 //        std::cout << "telemetry is received" << std::endl;
+        encoder.voltage_mv = static_cast<std::uint32_t>(charArrToInt32(msg.begin() + 16));
 
         return encoder;
     }
