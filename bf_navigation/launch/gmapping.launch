@@ -6,6 +6,9 @@
   <include file="$(arg custom_gmapping_launch_file)"/>
 
   <!-- Move base -->
-  <include file="$(find bf_navigation)/launch/includes/move_base.launch"/>
-
+  <!-- <include file="$(find bf_navigation)/launch/includes/move_base.launch"/> -->
+  
+  <!-- TEB move base -->  
+  <include file="$(find bf_navigation)/launch/includes/teb_move_base.launch"/>
+  
 </launch>
