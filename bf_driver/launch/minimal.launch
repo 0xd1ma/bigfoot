@@ -1,7 +1,7 @@
 <launch>
 
   <!-- Launch bf control driver node -->
-  <node pkg="bf_driver" type="bf_driver" name="bf_driver" output="log">
+  <node pkg="bf_driver" type="bf_driver" name="bf_driver" output="screen">
     <rosparam command="load" file="$(find bf_driver)/config/default.yaml" />
     <!-- <remap from="odom" to="odom_raw" /> -->
  

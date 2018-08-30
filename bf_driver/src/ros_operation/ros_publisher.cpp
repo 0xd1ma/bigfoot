@@ -145,14 +145,16 @@ namespace bf_driver
 //        double omega = M_PI * 0.098 * (deltaForwardLeft + deltaForwardRight + deltaBackRight + deltaBackLeft) / 36 / 4096 / 2;
         double sum = s_fl + s_fr + s_br + s_bl;
 
-        m_theta += sum / 4 / 0.18;
+
 
         //double deltaX = s_fl * cos(M_PI / 2 + wheelShiftAngle) + s_bl * cos(M_PI / 2 + M_PI / 2 + wheelShiftAngle) + s_br * cos(M_PI / 2 + M_PI + wheelShiftAngle) + s_fr * cos(M_PI / 2 + 3 * M_PI * wheelShiftAngle / 2);
         double deltaX = - s_fl * sin(wheelShiftAngle) + s_bl * sin(wheelShiftAngle) + s_br * sin(wheelShiftAngle) - s_fr * sin(wheelShiftAngle);
         double deltaY = - s_fl * cos(wheelShiftAngle) - s_bl * cos(wheelShiftAngle) + s_br * cos(wheelShiftAngle) + s_fr * cos(wheelShiftAngle);
 
-        m_x_global += deltaX / 2; /// 4 / 0.18;
-        m_y_global += deltaY / 2; /// 4 / 0.18;
+        m_x_global += deltaX * sin(m_theta) / 2; /// 4 / 0.18;
+        m_y_global += deltaY * cos(m_theta) / 2; /// 4 / 0.18;
+        
+        m_theta += sum / 4 / 0.18;        
 
         std::cout << "m_theta: " << rad2deg(m_theta) << std::endl;
         std::cout << "X: " << m_x_global << std::endl;
