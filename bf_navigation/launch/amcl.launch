@@ -15,7 +15,7 @@
   </include>
 
   <!-- Move base -->
-  <include file="$(find bf_navigation)/launch/includes/move_base.launch.xml">
+  <include file="$(find bf_navigation)/launch/includes/move_base.launch">
   </include>
 
 </launch>

@@ -18,7 +18,7 @@ LEFT  = 'left'
 
 SHOW_VIS = False
 FAN_ANGLE = np.pi/6.0 
-TARGET_DISTANCE = 1.05
+TARGET_DISTANCE = 0.7
 MEDIAN_FILTER_SIZE = 27
 KP = 0.3 # distance term
 KD = 0.05  # angle term
