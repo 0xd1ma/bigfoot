@@ -1,4 +1,4 @@
-frequency: 40
+frequency: 30
 sensor_timeout: 0.1
 
 two_d_mode: true
@@ -28,21 +28,21 @@ odom0_config: [false, false, false,
                false, false, false]
 
 odom0_queue_size: 10
-odom0_nodelay: true
+odom0_nodelay: false
 odom0_differential: false
 odom0_relative: false
 
 imu0: imu/data
 
 imu0_config: [false, false, false,
-              false, false, false,
+              false, false, true,
               false, false, false,
               false, false, true,
               true, true, false]
               
 imu0_nodelay: false
 imu0_differential: false
-imu0_relative: false
+imu0_relative: true
 imu0_queue_size: 10
 
 imu0_remove_gravitational_acceleration: true
