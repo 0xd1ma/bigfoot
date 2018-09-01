@@ -1,0 +1,17 @@
+subscribers:
+  - name:        "Teleoperation"
+    topic:       "input/teleop"
+    timeout:     1.0
+    priority:    8
+  - name:        "Navigation"
+    topic:       "input/navi"
+    timeout:     1.0
+    priority:    4
+  - name:        "Laser safety"
+    topic:       "input/laser_safety"
+    timeout:     3
+    priority:    2
+  - name:        "Wall follower"
+    topic:       "input/wall_follower"
+    timeout:     0.2
+    priority:    1

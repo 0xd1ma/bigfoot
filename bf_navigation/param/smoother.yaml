@@ -3,11 +3,11 @@
 # which runs on top.
 
 # Mandatory parameters
-speed_lim_v: 0.2
-speed_lim_w: 0.2
+speed_lim_v: 0.1
+speed_lim_w: 0.03
 
-accel_lim_v: 0.5 
-accel_lim_w: 0.5
+accel_lim_v: 0.05 
+accel_lim_w: 0.05
 
 # Optional parameters
 frequency: 20.0

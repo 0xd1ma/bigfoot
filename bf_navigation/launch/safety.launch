@@ -1,0 +1,4 @@
+<launch>  
+  <node pkg="bf_navigation" type="safety.py" name="safety_wall_follower_stop" output="screen">
+  </node>
+</launch>
