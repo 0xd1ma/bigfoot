@@ -112,8 +112,15 @@ namespace bf_driver
         }
 
         double voltage = tmp.voltage_mv / 1000.0;
-
-        std::cout << "robot voltage: " << voltage << std::endl;
+        
+        if ( voltage < 10.0 && voltage > 9.0 )
+        {
+			ROS_WARN_STREAM("lower voltage: " << voltage);
+		}
+		else if ( voltage < 9.0 )
+		{
+			ROS_ERROR_STREAM("critical voltage: " << voltage);			
+		}
 
         std::int32_t deltaForwardLeft = tmp.forward_left - m_frontLeftEncoderPrevious;
         std::int32_t deltaForwardRight = tmp.forward_right - m_frontRightEncoderPrevious;
@@ -125,10 +132,10 @@ namespace bf_driver
         m_backRightEncoderPrevious = tmp.back_right;
         m_backLeftEncoderPrevious = tmp.back_left;
 
-        std::cout << "delta forward left: " << deltaForwardLeft << std::endl;
-        std::cout << "delta forward right: " << deltaForwardRight << std::endl;
-        std::cout << "delta back right: " << deltaBackRight << std::endl;
-        std::cout << "delta back left: " << deltaBackLeft << std::endl;
+//        std::cout << "delta forward left: " << deltaForwardLeft << std::endl;
+//        std::cout << "delta forward right: " << deltaForwardRight << std::endl;
+//        std::cout << "delta back right: " << deltaBackRight << std::endl;
+//        std::cout << "delta back left: " << deltaBackLeft << std::endl;
 
         double deltaT = ros::Time::now().toSec() - m_stamp.toSec();
         m_stamp = ros::Time::now();
@@ -142,23 +149,19 @@ namespace bf_driver
         double s_br = deltaBackRight * multi;
         double s_bl = deltaBackLeft * multi;
 
-//        double omega = M_PI * 0.098 * (deltaForwardLeft + deltaForwardRight + deltaBackRight + deltaBackLeft) / 36 / 4096 / 2;
         double sum = s_fl + s_fr + s_br + s_bl;
 
-
-
-        //double deltaX = s_fl * cos(M_PI / 2 + wheelShiftAngle) + s_bl * cos(M_PI / 2 + M_PI / 2 + wheelShiftAngle) + s_br * cos(M_PI / 2 + M_PI + wheelShiftAngle) + s_fr * cos(M_PI / 2 + 3 * M_PI * wheelShiftAngle / 2);
         double deltaX = - s_fl * sin(wheelShiftAngle) + s_bl * sin(wheelShiftAngle) + s_br * sin(wheelShiftAngle) - s_fr * sin(wheelShiftAngle);
         double deltaY = - s_fl * cos(wheelShiftAngle) - s_bl * cos(wheelShiftAngle) + s_br * cos(wheelShiftAngle) + s_fr * cos(wheelShiftAngle);
 
-        m_x_global += deltaX * sin(m_theta) / 2; /// 4 / 0.18;
-        m_y_global += deltaY * cos(m_theta) / 2; /// 4 / 0.18;
+        m_x_global += ( deltaX * cos(m_theta) - deltaY * sin(m_theta) ) / 2; /// 4 / 0.18;
+        m_y_global += ( deltaX * sin(m_theta) + deltaY * cos(m_theta) ) / 2; /// 4 / 0.18;
         
         m_theta += sum / 4 / 0.18;        
 
-        std::cout << "m_theta: " << rad2deg(m_theta) << std::endl;
-        std::cout << "X: " << m_x_global << std::endl;
-        std::cout << "Y: " << m_y_global << std::endl;
+//        std::cout << "m_theta: " << rad2deg(m_theta) << std::endl;
+//        std::cout << "X: " << m_x_global << std::endl;
+//        std::cout << "Y: " << m_y_global << std::endl;
 
         geometry_msgs::TwistStamped msg;
 
