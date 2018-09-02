@@ -239,7 +239,7 @@ class WallFollow():
             self.viz.redraw()
             
     def shutdown(self):
-        rospy.loginfo("Stop TurtleBot")
+        rospy.loginfo("Stop BigFoot")
         self.cmd_vel_pub.publish(Twist())
         rospy.sleep(1)
 

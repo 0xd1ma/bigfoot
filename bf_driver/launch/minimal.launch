@@ -3,7 +3,7 @@
   <!-- Launch bf control driver node -->
   <node pkg="bf_driver" type="bf_driver" name="bf_driver" output="screen">
     <rosparam command="load" file="$(find bf_driver)/config/default.yaml" />
-    <remap from="odom" to="odom_raw" />
+    <!--<remap from="odom" to="odom_raw" /> -->
  
   </node>
 
@@ -24,10 +24,10 @@
   <include file="$(find urg_node)/launch/urg_lidar.launch" />
 
   <!-- Launch xsens driver -->
-  <include file="$(find xsens_driver)/launch/xsens_driver.launch" />
+  <!-- <include file="$(find xsens_driver)/launch/xsens_driver.launch" /> -->
 
   <!-- Launch localization -->
-  <include file="$(find bf_localization)/launch/nst.launch" />
+  <!-- <include file="$(find bf_localization)/launch/nst.launch" /> -->
 
 </launch>
 

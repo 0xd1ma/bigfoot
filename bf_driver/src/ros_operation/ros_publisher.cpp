@@ -192,7 +192,7 @@ namespace bf_driver
         odom_trans.transform.translation.z = 0.0;
         odom_trans.transform.rotation = odom_quat;
 
-        //m_odomTfBroadcaster.sendTransform(odom_trans);
+        m_odomTfBroadcaster.sendTransform(odom_trans);
 
         nav_msgs::Odometry odom;
 

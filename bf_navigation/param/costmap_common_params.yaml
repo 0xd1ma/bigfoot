@@ -8,8 +8,8 @@ obstacle_layer:
   enabled: true
   max_obstacle_height:  0.6
   track_unknown_space:  true    #true needed for disabling global path planning through unknown space
-  obstacle_range: 3.0
-  raytrace_range: 4.0
+  obstacle_range: 4.0
+  raytrace_range: 5.0
   inflation_radius: 0.2
   combination_method: 1
 
@@ -26,7 +26,7 @@ obstacle_layer:
 inflation_layer:
   enabled:              true
   cost_scaling_factor:  10.0
-  inflation_radius:     0.3
+  inflation_radius:     0.5
 
 static_layer:
   enabled:              true
