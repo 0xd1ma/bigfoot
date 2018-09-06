@@ -17,13 +17,13 @@ RIGHT = 'right'
 LEFT  = 'left'
 
 SHOW_VIS = False
-FAN_ANGLE = np.pi/6.0 
-TARGET_DISTANCE = 0.7
-MEDIAN_FILTER_SIZE = 27
+FAN_ANGLE = np.pi/24.0 
+TARGET_DISTANCE = 1.05
+MEDIAN_FILTER_SIZE = 107
 KP = 0.3 # distance term
 KD = 0.05  # angle term
 PUBLISH_LINE = True
-HISTORY_SIZE = 5 # Size of the circular array for smoothing steering commands
+HISTORY_SIZE = 10 # Size of the circular array for smoothing steering commands
 PUBLISH_RATE = 20.0 # number of control commands to publish per second
 SPEED = 0.04
 

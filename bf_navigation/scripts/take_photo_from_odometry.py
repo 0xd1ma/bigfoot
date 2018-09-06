@@ -150,7 +150,7 @@ def photo():
    
     rospy.init_node('photo', anonymous=False)
     
-    rospy.Subscriber("odom", Odometry, odometry_callback)
+    rospy.Subscriber("odom_raw", Odometry, odometry_callback)
     #rospy.Subscriber()
     
     rospy.Subscriber("photo/session_num", UInt32, session_num_callback)
