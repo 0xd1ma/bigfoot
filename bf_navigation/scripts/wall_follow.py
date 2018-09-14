@@ -17,8 +17,8 @@ RIGHT = 'right'
 LEFT  = 'left'
 
 SHOW_VIS = False
-FAN_ANGLE = np.pi/24.0 
-TARGET_DISTANCE = 1.05
+FAN_ANGLE = np.pi/24.0 # 24.0 
+TARGET_DISTANCE = 1.05 # 1.05
 MEDIAN_FILTER_SIZE = 107
 KP = 0.3 # distance term
 KD = 0.05  # angle term
@@ -200,7 +200,8 @@ class WallFollow():
             tmp = np.array(msg.ranges)
         
             # invert lidar(flip mounted)
-            values = tmp[::-1]
+            #values = tmp[::-1]
+            values = tmp
 
             # remove out of range values
             ranges = values[(values > msg.range_min) & (values < msg.range_max)]
