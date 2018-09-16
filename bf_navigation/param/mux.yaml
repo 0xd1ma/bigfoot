@@ -1,8 +1,12 @@
 subscribers:
   - name:        "Teleoperation"
-    topic:       "input/teleop"
+    topic:       "input/teleop_key"
     timeout:     3.0
     priority:    8
+  - name:        "Teleoperation"
+    topic:       "input/teleop_joy"
+    timeout:     3.0
+    priority:    7
   - name:        "Navigation"
     topic:       "input/navi"
     timeout:     1.0
