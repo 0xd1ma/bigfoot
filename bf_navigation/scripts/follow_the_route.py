@@ -139,9 +139,16 @@ if __name__ == '__main__':
             else:
                 rospy.loginfo("Start navi")
                 
-                q = quaternion_from_euler(0, 0, obj['yaw'])
+                q = quaternion_from_euler(0, 0, math.radians(obj['yaw']))
+
+		q_dict = dict()
+
+		q_dict["r1"] = q[0]
+		q_dict["r2"] = q[1]
+		q_dict["r3"] = q[2]
+		q_dict["r4"] = q[3]
                 
-                success = navigator.goto(obj['position'], q)
+                success = navigator.goto(obj['position'], q_dict)
 
                 rospy.loginfo("Stop navi")
                 if not success:

@@ -200,8 +200,8 @@ class WallFollow():
             tmp = np.array(msg.ranges)
         
             # invert lidar(flip mounted)
-            #values = tmp[::-1]
-            values = tmp
+            values = tmp[::-1]
+            #values = tmp
 
             # remove out of range values
             ranges = values[(values > msg.range_min) & (values < msg.range_max)]
