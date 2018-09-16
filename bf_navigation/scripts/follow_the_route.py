@@ -6,6 +6,8 @@ import yaml
 import sys
 import math
 
+from tf.transformations import quaternion_from_euler
+
 #from take_photo import TakePhoto
 from go_to_specific_point_on_map import GoToPose
 
@@ -67,7 +69,7 @@ if __name__ == '__main__':
         rospy.init_node('follow_route', anonymous=False)
         
         rospy.Subscriber('/amcl_pose', PoseWithCovarianceStamped, amcl_pose_callback)
-        rospy.Subscriber("/odom", Odometry, odometry_callback)
+        rospy.Subscriber("/odom_raw", Odometry, odometry_callback)
         
         start_session_pub = rospy.Publisher('/photo/start_session', Bool, queue_size=10)
         session_state_msg = Bool()
@@ -109,7 +111,7 @@ if __name__ == '__main__':
                 
                 p1 = (amcl_x, amcl_y)
 
-		dic = obj['position']
+                dic = obj['position']
                 p2 = (dic['x'], dic['y'])
 
                 while math.hypot(p2[0] - p1[0], p2[1] - p1[1]) > ENTRY_RADIUS:
@@ -136,7 +138,10 @@ if __name__ == '__main__':
                 
             else:
                 rospy.loginfo("Start navi")
-                success = navigator.goto(obj['position'], obj['quaternion'])
+                
+                q = quaternion_from_euler(0, 0, obj['yaw'])
+                
+                success = navigator.goto(obj['position'], q)
 
                 rospy.loginfo("Stop navi")
                 if not success:
