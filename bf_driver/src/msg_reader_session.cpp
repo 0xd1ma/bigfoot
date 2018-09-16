@@ -82,6 +82,13 @@ namespace bf_driver
 
                 m_port->read(bytesStream, inSize);
 
+                if (inSize != protocol::PROTOCOL_TWIST_MSG_SIZE)
+                {
+                    m_curState = State::AVAILABLE;
+
+                    return false;
+                }
+
 //                for (auto x : bytesStream)
 //                {
 //                    std::cout << std::hex << static_cast<int>(x) << " ";
